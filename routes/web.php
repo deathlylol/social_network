@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,6 +16,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/',[HomeController::class,'index'])->name('home');
-Route::get('/alert', function (){
-    return redirect()->route('home')->with('info','Вы можете войти!');
-});
+
+/*
+ * Авторизация
+ */
+Route::get('/auth/signup',[AuthController::class,'getSignup'])->name('auth.signup');
+Route::post('/auth/signup',[AuthController::class,'postSignup']);
