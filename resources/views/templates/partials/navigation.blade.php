@@ -17,15 +17,13 @@
                     <button class="btn btn-outline-primary" type="submit">Найти</button>
                 </form>
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">{{Auth::user()->getNameOrUsername}}</a></li>
-                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Обновить профиль</a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" href="#">Выйти</a></li>
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">{{Auth::user()->getName()}}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ Route('auth.logout') }}">Выйти</a></li>
                 </ul>
             @else
                 <ul class="navbar-nav justify-content-end w-100">
                     <li class="nav-item"><a class="nav-link" href="{{ route('auth.signup') }}">Зарегистрироваться</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/">Войти</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('auth.signin') }}">Войти</a></li>
                 </ul>
             @endif
         </div>

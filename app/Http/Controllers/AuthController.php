@@ -8,6 +8,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class AuthController
@@ -38,6 +39,31 @@ class AuthController extends Controller
 
         return redirect()
             ->route('home')
-            ->with('success','Вы успешно зарегистировались');
+            ->with('success','Авторизуйтесь под своим логином.');
+    }
+
+    public function getSignin()
+    {
+        return view('auth.signin');
+    }
+
+    public function postSignin(Request $request)
+    {
+        $this->validate($request, [
+            'username' => 'required|max:20',
+            'password' => 'required|min:6'
+        ]);
+        if (!Auth::attempt( $request->only(['username','password']),$request->has('remember') ))
+        {
+            return redirect()->back()->with('danger','Неправильный логин или пароль.');
+        }
+        return redirect()->route('home')->with('success','Вы успешно авторизовались.');
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+
+        return redirect()->route('home');
     }
 }

@@ -18,7 +18,14 @@ use Illuminate\Support\Facades\Route;
 Route::get('/',[HomeController::class,'index'])->name('home');
 
 /*
+ * Регистрация
+ */
+Route::get('/auth/signup',[AuthController::class,'getSignup'])->middleware('guest')->name('auth.signup');
+Route::post('/auth/signup',[AuthController::class,'postSignup'])->middleware('guest');
+/*
  * Авторизация
  */
-Route::get('/auth/signup',[AuthController::class,'getSignup'])->name('auth.signup');
-Route::post('/auth/signup',[AuthController::class,'postSignup']);
+Route::get('/auth/signin',[AuthController::class,'getSignin'])->middleware('guest')->name('auth.signin');
+Route::post('/auth/signin',[AuthController::class,'postSignin'])->middleware('guest');
+
+Route::get('/auth/logout',[AuthController::class,'logout'])->name('auth.logout');
