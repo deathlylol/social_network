@@ -8,21 +8,25 @@
         </button>
         <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarSupportedContent">
             @if(Auth::check())
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Стена</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Друзья</a></li>
-                </ul>
-                <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Поиск..." aria-label="Search">
-                    <button class="btn btn-outline-primary" type="submit">Найти</button>
-                </form>
+                <div class="d-flex">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Стена</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Друзья</a></li>
+                    </ul>
+                    <form method="GET" action="{{ route('search.results') }}" class="d-flex" style="margin-left: 10px">
+                        <input class="form-control me-2" type="search" placeholder="Поиск..." aria-label="Search" name="search">
+                        <button class="btn btn-outline-primary" type="submit">Найти</button>
+                    </form>
+                </div>
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">{{Auth::user()->getName()}}</a></li>
+                    <li class="nav-item"><a class="nav-link active" aria-current="page"
+                                            href="/">{{Auth::user()->getName()}}</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ Route('auth.logout') }}">Выйти</a></li>
                 </ul>
             @else
                 <ul class="navbar-nav justify-content-end w-100">
-                    <li class="nav-item"><a class="nav-link" href="{{ route('auth.signup') }}">Зарегистрироваться</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('auth.signup') }}">Зарегистрироваться</a>
+                    </li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('auth.signin') }}">Войти</a></li>
                 </ul>
             @endif
