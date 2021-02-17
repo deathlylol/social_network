@@ -3,7 +3,6 @@
     <div class="card-body">
         <p class="card-text"><a href="#">{{ $user->getName() }}</a></p>
     </div>
-
     @if($user->location)
         <p>{{ $user->location  }}</p>
     @endif

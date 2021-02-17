@@ -5,12 +5,12 @@
         <form method="post" action="{{ route('auth.signin') }}" novalidate>
             @csrf
             <div class="mb-3">
-{{--                @if($errors->has('username'))--}}
-{{--                    <label for="username"--}}
-{{--                           class="form-label help-block text-danger">{{$errors->first('username')}}</label>--}}
-{{--                @else--}}
+                @if($errors->has('username'))
+                    <label for="username"
+                           class="form-label help-block text-danger">{{$errors->first('username')}}</label>
+                @else
                     <label for="username" class="form-label">Логин</label>
-{{--                @endif--}}
+                @endif
                 <input type="text" name="username" class="form-control {{$errors->has('username') ? 'is-invalid': ''}}"
                        id="username" placeholder="loginExample" value="{{ old('username') }}">
             </div>

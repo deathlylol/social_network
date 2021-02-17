@@ -14,6 +14,7 @@ use Illuminate\Notifications\Notifiable;
  * @property string $last_name
  * @property string $location
  * @property string $email
+ * @property string $avatar
  * @property int $password
  * @package App\Models
  */
