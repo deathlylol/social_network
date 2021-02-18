@@ -53,7 +53,9 @@ class AuthController extends Controller
             'username' => 'required|max:20',
             'password' => 'required|min:6'
         ]);
-        if (!Auth::attempt( $request->only(['username','password']),$request->has('remember') ))
+        $user_data = $request->only(['username','password']);
+
+        if (!Auth::attempt($user_data,$request->has('remember')))
         {
             return redirect()->back()->with('danger','Неправильный логин или пароль.');
         }

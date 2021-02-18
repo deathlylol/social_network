@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 
 /**
  * Class User
+ * @property int $id
  * @property string $username
  * @property string $first_name
  * @property string $last_name
@@ -68,5 +69,15 @@ class User extends Authenticatable
         }
 
         return $this->username;
+    }
+
+    public function getAvatar()
+    {
+        $path = asset('users_avatar'). '/' ;
+
+        if($this->avatar == null){
+            return $path . 'empty-dalbayob.jpg';
+        }
+        return  $path . $this->avatar;
     }
 }

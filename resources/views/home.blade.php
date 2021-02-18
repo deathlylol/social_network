@@ -1,4 +1,6 @@
 @extends('templates.default')
 @section('content')
-    <h1>Добро пожаловать</h1>
+    <div class="container">
+        <h1>Добро пожаловать</h1>
+    </div>
 @endsection

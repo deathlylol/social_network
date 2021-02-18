@@ -1,0 +1,91 @@
+.container{
+    padding: 0;
+}
+.card-user{
+    margin-top: 10px;
+    margin-right: 10px;
+}
+.row{
+    margin: 0;
+}
+.wall-background{
+    position: relative;
+    width: 100%;
+    min-height: 380px;
+    overflow: hidden;
+}
+.wall-image{
+    border-radius: 10px;
+    position: absolute;
+    bottom: 10px
+}
+.wall-avatar{
+    text-align: center;
+    position: relative;
+}
+.wrap-avatar{
+    height: 168px;
+    width: 100%;
+    position: absolute;
+    top: -150px;
+}
+
+.wrap-avatar img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    max-width: 168px;
+}
+.navbar.navbar-light{
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 0px 50px;
+}
+.change-avatar-block{
+    display: flex;
+    justify-content: flex-end;
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+}
+.change-avatar-block span{
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: bold;
+    background: #fff;
+    border-radius: 10px;
+}
+.change-avatar-block span a{
+    padding: 10px 15px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+    color: #000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.change-avatar-block span a svg{
+    margin-right: 5px;
+}
+.custom-file-label::after{
+    display: none;
+}
+.custom-file{
+    cursor: pointer;
+}
+
+.profile-info-block{
+    background: #F0F2F5;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.profile-info{
+    background: #fff;
+    border-radius: 10px;
+}
+.profile-info ul{
+    list-style-type: none;
+    padding: 10px 15px;
+    margin: 0;
+}

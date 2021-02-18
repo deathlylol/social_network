@@ -20,7 +20,7 @@
                 </div>
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item"><a class="nav-link active" aria-current="page"
-                                            href="/">{{Auth::user()->getName()}}</a></li>
+                                            href="{{ route('profile.index',['username' => Auth::user()->username]) }}">{{Auth::user()->getName()}}</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ Route('auth.logout') }}">Выйти</a></li>
                 </ul>
             @else
