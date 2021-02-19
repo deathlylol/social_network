@@ -33,6 +33,8 @@ class User extends Authenticatable
         'first_name',
         'last_name',
         'location',
+        'school',
+        'job',
         'email',
         'password',
     ];
@@ -75,7 +77,7 @@ class User extends Authenticatable
     {
         $path = asset('users_avatar'). '/' ;
 
-        if($this->avatar == null){
+        if($this->avatar == null || empty($this->avatar)){
             return $path . 'empty-dalbayob.jpg';
         }
         return  $path . $this->avatar;

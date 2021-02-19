@@ -26,9 +26,10 @@
                 <div class="profile-info">
                     <h4 class="pl-3">Краткая информация</h4>
                     <ul>
-                        <li>живёт в г.</li>
-                        <li>работает в</li>
-                        <li><a href="#">Редактировать информацию</a></li>
+                        <li>{{!empty($user->location) ? "Живёт в г." . $user->location: '' }}</li>
+                        <li>{{!empty($user->job) ? "Работает в " . $user->job: '' }}</li>
+                        <li>{{!empty($user->school) ? "Учился в " . $user->school: '' }}</li>
+                        <li><a href="{{ route('profile.edit',['id' => $user->id]) }}">Редактировать информацию</a></li>
                     </ul>
                 </div>
             </div>

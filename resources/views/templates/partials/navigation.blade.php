@@ -13,7 +13,7 @@
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Стена</a></li>
                         <li class="nav-item"><a class="nav-link" href="#">Друзья</a></li>
                     </ul>
-                    <form method="GET" action="{{ route('search.results') }}" class="d-flex" style="margin-left: 10px">
+                    <form method="GET" action="{{ route('search.index') }}" class="d-flex" style="margin-left: 10px">
                         <input class="form-control me-2" type="search" placeholder="Поиск..." aria-label="Search" name="search" value="{{ Request::input('search') }}">
                         <button class="btn btn-outline-primary" type="submit">Найти</button>
                     </form>

@@ -36,17 +36,20 @@ Route::get('/auth/logout',[AuthController::class,'logout'])->name('auth.logout')
 /*
  * Поиск
  */
-Route::get('/search',[SearchController::class,'getSearchResults'])->name('search.results');
+Route::get('/search',[SearchController::class,'index'])->name('search.index');
 
 /*
  * Загрузка аватарки
  */
-Route::get('/user/{id}/upload-avatar',[UserController::class,'UploadAvatar'])->name('user.index');
-Route::post('/user/{id}/upload-avatar',[UserController::class,'saveAvatar'])->name('user.update');
+Route::get('/user/{id}/upload-avatar',[UserController::class,'index'])->name('user.index');
+Route::post('/user/{id}/store',[UserController::class,'store'])->name('user.store');
+Route::delete('/user/{id}/destroy',[UserController::class,'destroy'])->name('user.destroy');
 
 
 /*
  * Профили
  */
 Route::get('/user/{username}',[ProfileController::class,'index'])->name('profile.index');
+Route::get('/user/{id}/info',[ProfileController::class,'edit'])->name('profile.edit');
+Route::post('/user/{id}/info-update',[ProfileController::class,'update'])->name('profile.update');
 

@@ -13,7 +13,7 @@ use Illuminate\Routing\Controller;
  */
 class SearchController extends Controller
 {
-    public function getSearchResults(Request $request)
+    public function index(Request $request)
     {
         $query_search = $request->input('search');
         if (!$query_search) {

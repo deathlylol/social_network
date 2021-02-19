@@ -16,18 +16,17 @@ class UserController extends Controller
 {
     use ValidatesRequests;
 
-    public function UploadAvatar($id)
+    public function index($id)
     {
         $user = User::query()->findOrFail($id);
         return view('user.uploadAvatar')->with('user',$user);
     }
 
-    public function saveAvatar(Request $request,$id)
+    public function store(Request $request,$id)
     {
         $this->validate($request,[
             'avatar' => 'required|image|mimes:jpeg,png,jpg'
         ]);
-
         $user = User::query()->findOrFail($id);
 
         $avatar_file = $request->file('avatar');
@@ -39,5 +38,10 @@ class UserController extends Controller
         $user->save();
 
         return redirect()->back()->with('success','Сохранена');
+    }
+
+    public function destroy()
+    {
+
     }
 }

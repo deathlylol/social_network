@@ -26,6 +26,30 @@ class ProfileController extends Controller
         if (!$user) {
             abort(404);
         }
+
         return view('profile.index')->with('user',$user);
+    }
+
+    public function edit($id)
+    {
+        $user = User::query()->findOrFail($id);
+
+        return view('profile.updateInfo')->with('user',$user);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $this->validate($request,[
+            'location' => 'required|string|max:255',
+            'school' => 'required|string|max:255',
+            'job' => 'required|string|max:255',
+        ]);
+
+        $user = User::query()->findOrFail($id);
+
+        $user->fill($request->all());
+        $user->save();
+
+        return redirect()->back()->with('success','Ваши данные были изменены!');
     }
 }

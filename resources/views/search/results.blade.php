@@ -1,6 +1,6 @@
 @extends('templates.default')
 @section('content')
-    <div class="row">
+    <div class="row mt-5">
         <div class="container">
             <div class="col-lg-6 p-0">
                 <h3>Результат поиска: {{ Request::input('search') }}</h3>
