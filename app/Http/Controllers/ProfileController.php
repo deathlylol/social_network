@@ -19,13 +19,9 @@ class ProfileController extends Controller
      * @param $username
      * показывает профиль пользователя.
      */
-    public function index($username)
+    public function index($id)
     {
-        $user = User::query()->where('username', '=', $username)->first();
-
-        if (!$user) {
-            abort(404);
-        }
+        $user = User::query()->findOrFail($id);
 
         return view('profile.index')->with('user',$user);
     }

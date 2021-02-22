@@ -18,38 +18,54 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/',[HomeController::class,'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 /*
  * Регистрация
  */
-Route::get('/auth/signup',[AuthController::class,'getSignup'])->middleware('guest')->name('auth.signup');
-Route::post('/auth/signup',[AuthController::class,'postSignup'])->middleware('guest');
-/*
- * Авторизация
- */
-Route::get('/auth/signin',[AuthController::class,'getSignin'])->middleware('guest')->name('auth.signin');
-Route::post('/auth/signin',[AuthController::class,'postSignin'])->middleware('guest');
-
-Route::get('/auth/logout',[AuthController::class,'logout'])->name('auth.logout');
+Route::name('auth.')
+    ->prefix('auth')
+    ->group(function () {
+        /*
+         * Регистрация
+         */
+        Route::get('signup', [AuthController::class, 'getSignup'])->middleware('guest')->name('signup');
+        Route::post('signup', [AuthController::class, 'postSignup'])->middleware('guest');
+        /*
+         * Авторизация
+         */
+        Route::get('signin', [AuthController::class, 'getSignin'])->middleware('guest')->name('signin');
+        Route::post('signin', [AuthController::class, 'postSignin'])->middleware('guest');
+        /*
+        * Выход
+        */
+        Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+    });
 
 /*
  * Поиск
  */
-Route::get('/search',[SearchController::class,'index'])->name('search.index');
+Route::get('/search', [SearchController::class, 'index'])->name('search.index');
 
 /*
- * Загрузка аватарки
- */
-Route::get('/user/{id}/upload-avatar',[UserController::class,'index'])->name('user.index');
-Route::post('/user/{id}/store',[UserController::class,'store'])->name('user.store');
-Route::delete('/user/{id}/destroy',[UserController::class,'destroy'])->name('user.destroy');
-
+* Загрузка аватарки
+*/
+Route::name('user.')
+    ->prefix('user')
+    ->group(function () {
+        Route::get('{id}/upload-avatar', [UserController::class, 'index'])->name('index');
+        Route::post('{id}/store', [UserController::class, 'store'])->name('store');
+        Route::delete('{id}/destroy', [UserController::class, 'destroy'])->name('destroy');
+    });
 
 /*
  * Профили
  */
-Route::get('/user/{username}',[ProfileController::class,'index'])->name('profile.index');
-Route::get('/user/{id}/info',[ProfileController::class,'edit'])->name('profile.edit');
-Route::post('/user/{id}/info-update',[ProfileController::class,'update'])->name('profile.update');
+Route::name('profile.')
+    ->prefix('profile')
+    ->group(function () {
+        Route::get('{id}', [ProfileController::class, 'index'])->name('index');
+        Route::get('{id}/info', [ProfileController::class, 'edit'])->name('edit');
+        Route::post('{id}/info-update', [ProfileController::class, 'update'])->name('update');
+    });
 
