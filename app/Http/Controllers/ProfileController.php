@@ -22,7 +22,6 @@ class ProfileController extends Controller
     public function index($id)
     {
         $user = User::query()->findOrFail($id);
-
         return view('profile.index')->with('user',$user);
     }
 

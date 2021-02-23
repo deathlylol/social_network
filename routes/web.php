@@ -68,4 +68,3 @@ Route::name('profile.')
         Route::get('{id}/info', [ProfileController::class, 'edit'])->name('edit');
         Route::post('{id}/info-update', [ProfileController::class, 'update'])->name('update');
     });
-
