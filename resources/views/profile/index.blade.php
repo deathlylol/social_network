@@ -24,29 +24,86 @@
     </div>
     <div class="profile-info-block">
         <div class="container">
-            <div class="col-lg-4 pl-0">
-                <div class="profile-info">
-                    <h4 class="pl-3">Краткая информация</h4>
-                    <ul>
-                        <li>{{!empty($user->location) ? "Живёт в г." . $user->location: '' }}</li>
-                        <li>{{!empty($user->job) ? "Работает в " . $user->job: '' }}</li>
-                        <li>{{!empty($user->school) ? "Учился в " . $user->school: '' }}</li>
-                        <li><a href="{{ route('profile.edit',['id' => $user->id]) }}">Редактировать информацию</a></li>
-                    </ul>
+            <div class="row">
+                <div class="col-lg-4 pl-0">
+                    <div class="profile-info">
+                        <h4 class="pl-3">Краткая информация</h4>
+                        <ul>
+                            <li>{{!empty($user->location) ? "Живёт в г." . $user->location: '' }}</li>
+                            <li>{{!empty($user->job) ? "Работает в " . $user->job: '' }}</li>
+                            <li>{{!empty($user->school) ? "Учился в " . $user->school: '' }}</li>
+                            <li><a href="{{ route('profile.edit',['id' => $user->id]) }}">Редактировать информацию</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="profile-info mt-2">
+                        <h4 class="pl-3">Друзья</h4>
+                        <ul>
+                            @if (!$user->friends()->count())
+                                <p>Нет друзей.</p>
+                            @else
+                                @foreach($user->friends() as $user)
+                                    <li>
+                                        <a href="{{ route('profile.index',['id' => $user->id]) }}">{{ $user->getName() }}</a>
+                                    </li>
+                                @endforeach
+                            @endif
+                        </ul>
+                    </div>
                 </div>
-                <div class="profile-info mt-2">
-                    <h4 class="pl-3">Друзья</h4>
-                    <ul>
-                        @if (!$user->friends()->count())
-                            <p>Нет друзей.</p>
-                        @else
-                            @foreach($user->friends() as $user)
-                                <li><a href="{{ route('profile.index',['id' => $user->id]) }}">{{ $user->getName() }}</a></li>
-                            @endforeach
-                        @endif
-                    </ul>
+                <div class="col-lg-6"></div>
+                <div class="col-lg-2">
+                    <div class="profile-info">
+                        <p class="pl-3">Запросы в друзья</p>
+                        <ul>
+                            @if (!$friend_requests->count())
+                                <p>Нет запросов в друзья.</p>
+                            @else
+                                @foreach($friend_requests as $user)
+                                    <li>
+                                        <a href="{{ route('profile.index',['id' => $user->id]) }}">{{ $user->getName() }}</a>
+                                        <form action="" method="post">
+                                            <button class="btn btn-outline-primary" type="submit" name="">Принять
+                                            </button>
+                                        </form>
+                                    </li>
+                                @endforeach
+                            @endif
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 @endsection
+<script>
+    $(function () {
+        $('#save').on('click', function () {
+
+            var title = $('#title').val();
+            var text = $('#text').val();
+
+            $.ajax({
+                url: '{{ route('article.store') }}',
+                type: "POST",
+                data: {title: title, text: text},
+                headers: {
+                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (data) {
+                    $('#addArticle').modal('hide');
+                    $('#articles-wrap').removeClass('hidden').addClass('show');
+                    $('.alert').removeClass('show').addClass('hidden');
+                    var str = '<tr><td>' + data['id'] +
+                        '</td><td><a href="/article/' + data['id'] + '">' + data['title'] + '</a>' +
+                        '</td><td><a href="/article/' + data['id'] + '" class="delete" data-delete="' + data['id'] + '">Удалить</a></td></tr>';
+                    $('.table > tbody:last').append(str);
+                },
+                error: function (msg) {
+                    alert('Ошибка');
+                }
+            });
+        });
+    })
+
+</script>

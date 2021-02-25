@@ -82,4 +82,9 @@ class User extends Authenticatable
         }
         return  $path . $this->avatar;
     }
+
+    public function friendRequests()
+    {
+        return $this->by_user_friends()->wherePivot('accepted',false)->get();
+    }
 }

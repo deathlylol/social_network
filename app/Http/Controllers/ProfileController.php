@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class ProfileController
@@ -22,7 +23,11 @@ class ProfileController extends Controller
     public function index($id)
     {
         $user = User::query()->findOrFail($id);
-        return view('profile.index')->with('user',$user);
+        $friend_requests =  Auth::user()->friendRequests();
+        return view('profile.index',[
+            'user' => $user,
+            'friend_requests' => $friend_requests
+        ]);
     }
 
     public function edit($id)

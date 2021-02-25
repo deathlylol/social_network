@@ -68,3 +68,9 @@ Route::name('profile.')
         Route::get('{id}/info', [ProfileController::class, 'edit'])->name('edit');
         Route::post('{id}/info-update', [ProfileController::class, 'update'])->name('update');
     });
+
+Route::name('friend.')
+    ->prefix('friend')
+    ->group(function(){
+        Route::post('{id}', [UserController::class,'addFriend'])->name('add-friend');
+    });
