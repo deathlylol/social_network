@@ -22,7 +22,7 @@
             </div>
         </div>
     </div>
-    <div class="profile-info-block">
+    <div class="profile-info-block pt-4">
         <div class="container">
             <div class="row">
                 <div class="col-lg-4 pl-0">
@@ -54,7 +54,20 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-lg-6"></div>
+                <div class="col-lg-6">
+                    <div class="profile-info">
+                        <div style="padding: 10px 15px;">
+                            <form action="" method="">
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" placeholder="Что у вас нового?" name="userNews">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-primary" type="button">Поделиться</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-lg-2">
                     <div class="profile-info">
                         <p class="pl-3">Запросы в друзья</p>
@@ -94,9 +107,8 @@
                         },
                         success: function (data) {
                             li_block.parent().remove();
-                            $('.accept-user').css({'display':'block'}).
-                            $('.user_friend').css({'display':'block'}).text("Теперь вы друзья с " + data['username']);
-                            $('.ajax-li').css({'display':'block'}).find('.ajax-a').text(data['username']);
+                            $('.accept-user').css({'display': 'block'}).$('.user_friend').css({'display': 'block'}).text("Теперь вы друзья с " + data['username']);
+                            $('.ajax-li').css({'display': 'block'}).find('.ajax-a').text(data['username']);
                         },
                         error: function (msg) {
                             alert('Ошибка');

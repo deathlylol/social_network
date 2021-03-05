@@ -15,19 +15,13 @@
                     </ul>
                     <form method="GET" action="{{ route('search.index') }}" class="d-flex" style="margin-left: 10px">
                         <input class="form-control me-2" type="search" placeholder="Поиск..." aria-label="Search" name="search" value="{{ Request::input('search') }}">
-                        <button class="btn btn-outline-primary" type="submit">Найти</button>
+                        <button class="btn btn-outline-primary ml-1" type="submit">Найти</button>
                     </form>
                 </div>
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item"><a class="nav-link active" aria-current="page"
                                             href="{{ route('profile.index',['id' => Auth::user()->id]) }}">{{Auth::user()->getName()}}</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ Route('auth.logout') }}">Выйти</a></li>
-                </ul>
-            @else
-                <ul class="navbar-nav justify-content-end w-100">
-                    <li class="nav-item"><a class="nav-link" href="{{ route('auth.signup') }}">Зарегистрироваться</a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('auth.signin') }}">Войти</a></li>
                 </ul>
             @endif
         </div>
