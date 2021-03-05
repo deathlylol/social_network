@@ -78,7 +78,7 @@ class User extends Authenticatable
         $path = asset('users_avatar'). '/' ;
 
         if($this->avatar == null || empty($this->avatar)){
-            return $path . 'empty-dalbayob.jpg';
+            return $path . 'empty.jpg';
         }
         return  $path . $this->avatar;
     }

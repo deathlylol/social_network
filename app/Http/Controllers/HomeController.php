@@ -20,4 +20,9 @@ class HomeController extends Controller
     {
         return view('home');
     }
+
+    public function infoWall()
+    {
+        return view('templates.infowall');
+    }
 }

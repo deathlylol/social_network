@@ -38,7 +38,7 @@ class AuthController extends Controller
         ]);
 
         return redirect()
-            ->route('home')
+            ->route('info-wall')
             ->with('success','Авторизуйтесь под своим логином.');
     }
 

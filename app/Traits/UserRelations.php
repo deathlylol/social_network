@@ -6,12 +6,12 @@ use App\Models\User;
 
 trait UserRelations
 {
-    public function by_user_friends()
+    public function by_user_friends() //юзера отправителя friend
     {
         return $this->belongsToMany(User::class,'friends','user_id','friend_id');
     }
 
-    public function by_friend_friends()
+    public function by_friend_friends() // frienda получаю юзера
     {
         return $this->belongsToMany(User::class,'friends','friend_id','user_id');
     }

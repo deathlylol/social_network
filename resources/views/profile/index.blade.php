@@ -42,9 +42,12 @@
                             @if (!$user->friends()->count())
                                 <p>Нет друзей.</p>
                             @else
-                                @foreach($user->friends() as $user)
+                                @foreach($user->friends() as $friend)
                                     <li>
-                                        <a href="{{ route('profile.index',['id' => $user->id]) }}">{{ $user->getName() }}</a>
+                                        <a href="{{ route('profile.index',['id' => $friend->id]) }}">{{ $friend->getName() }}</a>
+                                    </li>
+                                    <li class="ajax-li">
+                                        <a href="#" class="ajax-a"></a>
                                     </li>
                                 @endforeach
                             @endif
@@ -59,13 +62,11 @@
                             @if (!$friend_requests->count())
                                 <p>Нет запросов в друзья.</p>
                             @else
-                                @foreach($friend_requests as $user)
-                                    <li>
-                                        <a href="{{ route('profile.index',['id' => $user->id]) }}">{{ $user->getName() }}</a>
-                                        <form action="" method="post">
-                                            <button class="btn btn-outline-primary" type="submit" name="">Принять
-                                            </button>
-                                        </form>
+                                @foreach($friend_requests as $user_friend)
+                                    <li class="user_friend">
+                                        <p class="user_friend"></p>
+                                        <a href="{{ route('profile.index',['id' => $user_friend->id]) }}">{{ $user_friend->getName() }}</a>
+                                        <span class="btn btn-outline-primary accept" data-id="{{$user_friend->id}}">Принять</span>
                                     </li>
                                 @endforeach
                             @endif
@@ -75,35 +76,34 @@
             </div>
         </div>
     </div>
+    @push('scripts')
+        <script>
+            $('document').ready(function () {
+                $('.accept').on('click', function () {
+                    let friend_id = $(this).attr('data-id');
+                    let li_block = $(this);
+                    $.ajax({
+                        dataType: "json",
+                        url: '{{ route('user.add-friend') }}',
+                        type: "POST",
+                        data: {
+                            user_id: {{$user->id}},
+                            friend_id: friend_id,
+                            accepted: true,
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function (data) {
+                            li_block.parent().remove();
+                            $('.accept-user').css({'display':'block'}).
+                            $('.user_friend').css({'display':'block'}).text("Теперь вы друзья с " + data['username']);
+                            $('.ajax-li').css({'display':'block'}).find('.ajax-a').text(data['username']);
+                        },
+                        error: function (msg) {
+                            alert('Ошибка');
+                        }
+                    });
+                });
+            })
+        </script>
+    @endpush
 @endsection
-<script>
-    $(function () {
-        $('#save').on('click', function () {
-
-            var title = $('#title').val();
-            var text = $('#text').val();
-
-            $.ajax({
-                url: '{{ route('article.store') }}',
-                type: "POST",
-                data: {title: title, text: text},
-                headers: {
-                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function (data) {
-                    $('#addArticle').modal('hide');
-                    $('#articles-wrap').removeClass('hidden').addClass('show');
-                    $('.alert').removeClass('show').addClass('hidden');
-                    var str = '<tr><td>' + data['id'] +
-                        '</td><td><a href="/article/' + data['id'] + '">' + data['title'] + '</a>' +
-                        '</td><td><a href="/article/' + data['id'] + '" class="delete" data-delete="' + data['id'] + '">Удалить</a></td></tr>';
-                    $('.table > tbody:last').append(str);
-                },
-                error: function (msg) {
-                    alert('Ошибка');
-                }
-            });
-        });
-    })
-
-</script>

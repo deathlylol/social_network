@@ -18,7 +18,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home')->middleware('guest');
+
+Route::get('/info-wall', [HomeController::class, 'infoWall']);
 
 /*
  * Регистрация
@@ -56,6 +58,7 @@ Route::name('user.')
         Route::get('{id}/upload-avatar', [UserController::class, 'index'])->name('index');
         Route::post('{id}/store', [UserController::class, 'store'])->name('store');
         Route::delete('{id}/destroy', [UserController::class, 'destroy'])->name('destroy');
+        Route::post('add-friend', [UserController::class, 'addFriend'])->name('add-friend');
     });
 
 /*
@@ -67,10 +70,4 @@ Route::name('profile.')
         Route::get('{id}', [ProfileController::class, 'index'])->name('index');
         Route::get('{id}/info', [ProfileController::class, 'edit'])->name('edit');
         Route::post('{id}/info-update', [ProfileController::class, 'update'])->name('update');
-    });
-
-Route::name('friend.')
-    ->prefix('friend')
-    ->group(function(){
-        Route::post('{id}', [UserController::class,'addFriend'])->name('add-friend');
     });

@@ -8,6 +8,12 @@
 .row{
     margin: 0;
 }
+.main-img{
+    max-width: 100%;
+}
+.main-img-block{
+    width: 700px;
+}
 .wall-background{
     position: relative;
     width: 100%;
@@ -88,4 +94,11 @@
     list-style-type: none;
     padding: 10px 15px;
     margin: 0;
+}
+.ajax-li{
+    display: none;
+}
+
+.accept-user{
+    display: none;
 }
