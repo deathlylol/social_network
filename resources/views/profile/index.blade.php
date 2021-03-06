@@ -93,8 +93,8 @@
         <script>
             $('document').ready(function () {
                 $('.accept').on('click', function () {
-                    let friend_id = $(this).attr('data-id');
                     let li_block = $(this);
+                    let friend_id = $(this).attr('data-id');
                     $.ajax({
                         dataType: "json",
                         url: '{{ route('user.add-friend') }}',

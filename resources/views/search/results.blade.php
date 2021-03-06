@@ -19,3 +19,28 @@
         </div>
     </div>
 @endsection
+@push('scripts')
+    <script>
+        $('document').ready(function () {
+            $('.friend-subm').on('click', function () {
+                let friend_id = $(this).attr('data-id');
+                $.ajax({
+                    dataType: "json",
+                    url: '{{ route('user.request-friend') }}',
+                    type: "POST",
+                    data: {
+                        friend_id: friend_id,
+                        accepted: true,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function (data) {
+                        console.log(data);
+                    },
+                    error: function (msg) {
+                        alert('Ошибка');
+                    }
+                });
+            });
+        })
+    </script>
+@endpush
