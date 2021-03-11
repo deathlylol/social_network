@@ -24,6 +24,7 @@
         $('document').ready(function () {
             $('.friend-subm').on('click', function () {
                 let friend_id = $(this).attr('data-id');
+                let button = $(this);
                 $.ajax({
                     dataType: "json",
                     url: '{{ route('user.request-friend') }}',
@@ -34,7 +35,7 @@
                         _token: '{{ csrf_token() }}'
                     },
                     success: function (data) {
-                        console.log(data);
+                        button.removeClass('btn-primary friend-subm').addClass('btn-success').text('Отменить запрос');
                     },
                     error: function (msg) {
                         alert('Ошибка');

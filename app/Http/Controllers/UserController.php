@@ -46,16 +46,14 @@ class UserController extends Controller
     public function sendRequestFriend(Request $request)
     {
         if ($request->ajax()) {
+
             $this->validate($request, [
                 'friend_id' => 'required',
                 'accepted' => 'required'
             ]);
             $user = User::query()->findOrFail(Auth::user()->id);
-            if(Auth::user()->friends())
-            {
 
-            }
-            if($user->friendRequests()){
+            /*if($user->friendRequests()){
                 $user->by_user_friends()
                     ->wherePivot('accepted', false)
                     ->where('friend_id', $request->input('friend_id'))
@@ -63,15 +61,14 @@ class UserController extends Controller
                     ->pivot
                     ->update(['accepted' => true]);
                 return response()->json(['message' => 'Вы теперь друзья'],200);
-            }
+            }*/
 
             DB::table('friends')->insert([
-               'user_id' => $request->input('friend_id'),
-               'friend_id' => Auth::user()->id,
-               'accepted' => 0
+                'user_id' => $request->input('friend_id'),
+                'friend_id' => Auth::user()->id,
+                'accepted' => 0
             ]);
-
-            return response()->json(['message' => 'вы теперь друзья']);
+            return response()->json(['message' => 'Запрос отправлен']);
         }
     }
 
@@ -100,8 +97,19 @@ class UserController extends Controller
         }
     }
 
-    public function destroy()
+    public function destroy(Request $request)
     {
-
+        if ($request->ajax()){
+            $this->validate($request, [
+                'friend_id' => 'required',
+                'accepted' => 'required'
+            ]);
+            $friend = User::query()->findOrFail($request->input('friend_id'));
+            return Auth::user()->by_friend_friends()
+                ->wherePivot('accepted', true)
+                ->orWherePivot('accepted',false)
+                ->wherePivot('user_id' , $friend->id)
+                ->detach();
+        }
     }
 }

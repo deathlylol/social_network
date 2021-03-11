@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
  * @property string $location
  * @property string $email
  * @property string $avatar
+ * @property string $wall_img
  * @property int $password
  * @package App\Models
  */
@@ -61,13 +62,11 @@ class User extends Authenticatable
 
     public function getName()
     {
-        if($this->first_name && $this->last_name)
-        {
+        if ($this->first_name && $this->last_name) {
             return "{$this->first_name} {$this->last_name}";
         }
 
-        if($this->first_name)
-        {
+        if ($this->first_name) {
             return $this->first_name;
         }
 
@@ -76,16 +75,36 @@ class User extends Authenticatable
 
     public function getAvatar()
     {
-        $path = asset('users_avatar'). '/' ;
+        $path = asset('users_avatar') . '/';
 
-        if($this->avatar == null || empty($this->avatar)){
+        if ($this->avatar == null || empty($this->avatar)) {
             return $path . 'empty.jpg';
         }
-        return  $path . $this->avatar;
+        return $path . $this->avatar;
+    }
+
+    public function getWall()
+    {
+        $path = asset('wall') . '/';
+
+        if ($this->wall_img == null || empty($this->avatar)) {
+            return $path . 'noah.jpg';
+        }
+        return $path . $this->avatar;
     }
 
     public function friendRequests()
     {
-        return $this->by_user_friends()->wherePivot('accepted',false)->get();
+        return $this->by_user_friends()->wherePivot('accepted', false)->get();
+    }
+
+    public function friendRequestsById($id)
+    {
+        return $this->by_friend_friends()->wherePivot('accepted', false)->wherePivot('user_id', $id)->first();
+    }
+
+    public function canDelete($id)
+    {
+        return $this->by_friend_friends()->wherePivot('accepted', true)->wherePivot('user_id',$id)->first();
     }
 }
