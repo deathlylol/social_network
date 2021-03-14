@@ -2,7 +2,7 @@
 @section('content')
     <div class="container">
         <div class="wall-background">
-            <img src="{{ $user->getWall() }}" alt="" class="wall-image img-fluid">
+            <img src="{{ $user->getWall() }}" alt="wall-wrapper" class="wall-image img-fluid">
         </div>
         <div class="wall-avatar">
             <div class="wrap-avatar">
@@ -10,9 +10,10 @@
                     <img src="{{ $user->getAvatar() }}" alt="фото {{ $user->first_name }}">
                 </div>
             </div>
+            @if(Auth::user()->id == $user->id)
             <div class="change-avatar-block d-flex">
             <span>
-                <a href="{{ route('user.index',['id' => $user->id]) }}">
+                <a href="{{ route('user.wall-img',['id' => $user->id]) }}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                          class="bi bi-camera-fill" viewBox="0 0 16 16">
                       <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
@@ -32,6 +33,7 @@
                 </a>
             </span>
             </div>
+            @endif
         </div>
     </div>
     <div class="profile-info-block pt-4">
@@ -44,16 +46,18 @@
                             <li>{{!empty($user->location) ? "Живёт в г." . $user->location: '' }}</li>
                             <li>{{!empty($user->job) ? "Работает в " . $user->job: '' }}</li>
                             <li>{{!empty($user->school) ? "Учился в " . $user->school: '' }}</li>
+                            @if(Auth::user()->id == $user->id)
                             <li><a href="{{ route('profile.edit',['id' => $user->id]) }}">Редактировать информацию</a></li>
+                            @endif
                         </ul>
                     </div>
                     <div class="profile-info mt-2">
                         <div class="d-flex justify-content-between">
                             <h4 class="pl-3 pt-3">Друзья</h4>
-                            @if(Auth::user()->canDelete($user->id))
+                            @if(Auth::user()->canDeleteByFriend($user->id) || Auth::user()->canDeleteByUser($user->id) )
                             <button type="submit" class="btn btn-danger delete-friend" data-id="{{$user->id}}">Удалить из друзей</button>
                             @elseif(Auth::user()->friendRequestsById($user->id))
-                            <button type="submit" class="btn btn-warning delete-friend" data-id="{{$user->id}}">Отменить запрос</button>
+                            <button type="submit" class="btn btn-info delete-friend" data-id="{{$user->id}}">Отменить запрос</button>
                             @elseif(Auth::user()->id != $user->id)
                             <button type="submit" class="btn btn-primary friend-subm" data-id="{{$user->id}}">Добавить в друзья</button>
                             @endif
@@ -116,6 +120,7 @@
     @push('scripts')
         <script>
             $('document').ready(function () {
+
                 $('.accept').on('click', function () {
                     let li_block = $(this);
                     let friend_id = $(this).attr('data-id');
@@ -179,6 +184,7 @@
                         }
                     });
                 });
+
             })
         </script>
     @endpush

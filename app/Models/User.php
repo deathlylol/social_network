@@ -90,7 +90,7 @@ class User extends Authenticatable
         if ($this->wall_img == null || empty($this->avatar)) {
             return $path . 'noah.jpg';
         }
-        return $path . $this->avatar;
+        return $path . $this->wall_img;
     }
 
     public function friendRequests()
@@ -103,8 +103,13 @@ class User extends Authenticatable
         return $this->by_friend_friends()->wherePivot('accepted', false)->wherePivot('user_id', $id)->first();
     }
 
-    public function canDelete($id)
+    public function canDeleteByFriend($id)
     {
         return $this->by_friend_friends()->wherePivot('accepted', true)->wherePivot('user_id',$id)->first();
+    }
+
+    public function canDeleteByUser($id)
+    {
+        return $this->by_user_friends()->wherePivot('accepted', true)->wherePivot('friend_id',$id)->first();
     }
 }

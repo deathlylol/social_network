@@ -58,6 +58,8 @@ Route::name('user.')
     ->group(function () {
         Route::get('{id}/upload-avatar', [UserController::class, 'index'])->name('index');
         Route::post('{id}/store', [UserController::class, 'store'])->name('store');
+        Route::get('{id}/wall-img', [UserController::class, 'imageWall'])->name('wall-img');
+        Route::post('{id}/wall-img', [UserController::class, 'uploadImageWall'])->name('wall-img');
         Route::post('destroy', [UserController::class, 'destroy'])->name('destroy');
         Route::post('add-friend', [UserController::class, 'addFriend'])->name('add-friend');
         Route::post('send-request-friend', [UserController::class, 'sendRequestFriend'])->name('request-friend');

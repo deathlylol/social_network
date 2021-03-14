@@ -7,8 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class UploadFile extends Model
 {
-    public static function uploadAvatar($avatar_file,$avatar_name)
+    public static function uploadAvatar($file,$avatar_name)
     {
-        $avatar_file->move(public_path('users_avatar'), $avatar_name);
+        $file->move(public_path('users_avatar'), $avatar_name);
+    }
+
+    public static function uploadWallImage($file,$avatar_name)
+    {
+        $file->move(public_path('wall'), $avatar_name);
     }
 }

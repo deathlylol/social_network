@@ -43,6 +43,28 @@ class UserController extends Controller
         return redirect()->back()->with('success', 'Сохранена');
     }
 
+    public function imageWall($id)
+    {
+        $user = User::query()->findOrFail($id);
+        return view('user.uploadImageWall')->with('user', $user);
+    }
+    public function uploadImageWall(Request $request,$id)
+    {
+        $this->validate($request, [
+            'wall_img' => 'required|image|mimes:jpeg,png,jpg'
+        ]);
+        $user = User::query()->findOrFail($id);
+
+        $wall_file = $request->file('wall_img');
+        $wall_name = md5(uniqid($wall_file->getClientOriginalName())) . '.' . $wall_file->extension();
+        UploadFile::uploadWallImage($wall_file, $wall_name);
+
+        $user->wall_img = $wall_name;
+        $user->save();
+
+        return redirect()->back()->with('success', 'Сохранена');
+    }
+
     public function sendRequestFriend(Request $request)
     {
         if ($request->ajax()) {
