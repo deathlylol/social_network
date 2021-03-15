@@ -19,13 +19,13 @@ class UserController extends Controller
 {
     use ValidatesRequests;
 
-    public function index($id)
+    public function avatar($id)
     {
         $user = User::query()->findOrFail($id);
         return view('user.uploadAvatar')->with('user', $user);
     }
 
-    public function store(Request $request, $id)
+    public function uploadAvatar(Request $request, $id)
     {
         $this->validate($request, [
             'avatar' => 'required|image|mimes:jpeg,png,jpg'
@@ -133,5 +133,20 @@ class UserController extends Controller
                 ->wherePivot('user_id' , $friend->id)
                 ->detach();
         }
+    }
+
+    public function createPost(Request $request)
+    {
+        $this->validate($request,[
+           'body' => 'required|string|max:1000'
+        ]);
+
+        Auth::user()->posts()->create([
+            'body' => $request->input('body')
+        ]);
+
+        return redirect()
+            ->back()
+            ->with('success','добавлен пост');
     }
 }

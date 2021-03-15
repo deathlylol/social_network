@@ -60,7 +60,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function getName()
+    /**
+     * @return string
+     * Выводит имя пользователя в зависимости его существующих имён
+     */
+    public function getName(): string
     {
         if ($this->first_name && $this->last_name) {
             return "{$this->first_name} {$this->last_name}";
@@ -73,7 +77,11 @@ class User extends Authenticatable
         return $this->username;
     }
 
-    public function getAvatar()
+    /**
+     * @return string
+     * Отображает аватар
+     */
+    public function getAvatar(): string
     {
         $path = asset('users_avatar') . '/';
 
@@ -83,7 +91,11 @@ class User extends Authenticatable
         return $path . $this->avatar;
     }
 
-    public function getWall()
+    /**
+     * @return string
+     * отображает изображение стены профиля
+     */
+    public function getWall(): string
     {
         $path = asset('wall') . '/';
 

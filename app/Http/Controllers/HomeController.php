@@ -7,6 +7,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class HomeController
@@ -18,6 +19,9 @@ class HomeController extends Controller
 
     public function index()
     {
+        if(Auth::check()){
+            return view('timeline.index');
+        }
         return view('home');
     }
 
