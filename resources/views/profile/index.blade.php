@@ -70,12 +70,11 @@
                                 </button>
                             @endif
                         </div>
-
                         <ul class="d-flex flex-wrap">
-                            @if (!$user->friends()->count())
+                            @if (count($friends) == 0)
                                 <p>Нет друзей.</p>
                             @else
-                                @foreach($user->friends() as $friend)
+                                @foreach($friends as $friend)
                                     <li style="padding-right: 15px;padding-top:15px">
                                         <div style="width: 50px;height: 50px;border-radius: 100%;overflow:hidden">
                                             <img src="{{$friend->getAvatar()}}" alt=""
