@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\UploadFile;
 use App\Models\User;
-use http\Env\Response;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -75,16 +74,6 @@ class UserController extends Controller
             ]);
             $user = User::query()->findOrFail(Auth::user()->id);
 
-            /*if($user->friendRequests()){
-                $user->by_user_friends()
-                    ->wherePivot('accepted', false)
-                    ->where('friend_id', $request->input('friend_id'))
-                    ->first()
-                    ->pivot
-                    ->update(['accepted' => true]);
-                return response()->json(['message' => 'Вы теперь друзья'],200);
-            }*/
-
             DB::table('friends')->insert([
                 'user_id' => $request->input('friend_id'),
                 'friend_id' => Auth::user()->id,
@@ -98,17 +87,14 @@ class UserController extends Controller
     {
         if ($request->ajax()) {
             $this->validate($request, [
-                'user_id' => 'required',
                 'friend_id' => 'required',
                 'accepted' => 'required'
             ]);
 
-            $user = User::query()->findOrFail($request->input('user_id'));
             $user_friend = User::query()->findOrFail($request->input('friend_id'));
-
             $friend_id = $request->input('friend_id');
 
-            $user->by_user_friends()
+            Auth::user()->by_user_friends()
                 ->wherePivot('accepted', false)
                 ->where('friend_id', $friend_id)
                 ->first()

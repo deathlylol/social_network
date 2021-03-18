@@ -91,23 +91,39 @@
                 <div class="col-lg-6">
                     <div class="profile-info">
                         <div style="padding: 10px 15px;">
-                            <form action="{{route('user.post')}}" method="POST">
-                                @csrf
-                                <div class="form-group mb-3">
-                                    <textarea class="form-control {{ $errors->has('body') ? 'is-invalid':''}}" placeholder="Что нового?"
+                            @if(Auth::user()->id == $user->id)
+                                <form action="{{route('user.post')}}" method="POST">
+                                    @csrf
+                                    <div class="form-group mb-3">
+                                    <textarea class="form-control {{ $errors->has('body') ? 'is-invalid':''}}"
+                                              placeholder="Поделитесь вашими новостями."
                                               name="body"></textarea>
-                                    @if($errors->has('body'))
-                                        <div class="invalid-feedback">
-                                            <p>{{$errors->first('body')}}</p>
+                                        @if($errors->has('body'))
+                                            <div class="invalid-feedback">
+                                                <p>{{$errors->first('body')}}</p>
+                                            </div>
+                                        @endif
+                                        <div class="input-group mt-2">
+                                            <button class="btn btn-outline-primary" type="submit">Поделиться</button>
                                         </div>
-                                    @endif
-                                    <div class="input-group">
-                                        <button class="btn btn-outline-primary" type="submit">Поделиться</button>
                                     </div>
-                                </div>
-                            </form>
+                                </form>
+                            @else
+                                <h4>Публикации</h4>
+                            @endif
                         </div>
                     </div>
+                    @foreach($posts as $post)
+                        <div class="profile-info mt-3 mb-3">
+                            <div class="media" style="padding: 15px">
+                                <img class="mr-3" src="{{ $user->getAvatar() }}" alt="Generic placeholder image"
+                                     style="height: 64px;width:64px;object-fit: cover; border-radius: 50%">
+                                <div class="media-body">
+                                    {{$post['body']}}
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
                 <div class="col-lg-2">
                     <div class="profile-info pb-3">
