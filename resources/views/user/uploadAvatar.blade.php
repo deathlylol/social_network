@@ -3,7 +3,7 @@
     <div class="container mt-5">
         <h1>Загрузите вашу аватарку</h1>
         <div class="col-lg-3 p-0">
-            <form action="{{ route('user.store',['id' => $user->id]) }}" method="POST" enctype="multipart/form-data"
+            <form action="{{ route('user.upload-avatar',['id' => $user->id]) }}" method="POST" enctype="multipart/form-data"
                   novalidate>
                 @csrf
                 <div class="d-flex align-items-start">

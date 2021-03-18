@@ -2,6 +2,7 @@
 namespace App\Traits;
 
 
+use App\Models\Posts;
 use App\Models\User;
 
 trait UserRelations
@@ -20,5 +21,10 @@ trait UserRelations
     {
         return $this->by_user_friends()->wherePivot('accepted',true)->get()
             ->merge( $this->by_friend_friends()->wherePivot('accepted',true)->get() );
+    }
+
+    public function posts()
+    {
+        return $this->hasMany(Posts::class,'user_id');
     }
 }

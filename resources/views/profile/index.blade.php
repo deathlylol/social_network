@@ -6,12 +6,13 @@
         </div>
         <div class="wall-avatar">
             <div class="wrap-avatar">
-                <div style="height: 168px;width: 168px;border-radius: 50%;overflow: hidden; margin: 0 auto;border: 4px solid #fff">
+                <div
+                    style="height: 168px;width: 168px;border-radius: 50%;overflow: hidden; margin: 0 auto;border: 4px solid #fff">
                     <img src="{{ $user->getAvatar() }}" alt="фото {{ $user->first_name }}">
                 </div>
             </div>
             @if(Auth::user()->id == $user->id)
-            <div class="change-avatar-block d-flex">
+                <div class="change-avatar-block d-flex">
             <span>
                 <a href="{{ route('user.wall-img',['id' => $user->id]) }}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -22,8 +23,8 @@
                     </svg> Редактировать фото обложки
                 </a>
             </span>
-            <span>
-                <a href="{{ route('user.index',['id' => $user->id]) }}">
+                    <span>
+                <a href="{{ route('user.avatar',['id' => $user->id]) }}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                          class="bi bi-camera-fill" viewBox="0 0 16 16">
                       <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
@@ -32,7 +33,7 @@
                     </svg> Редактировать аватарку
                 </a>
             </span>
-            </div>
+                </div>
             @endif
         </div>
     </div>
@@ -47,7 +48,8 @@
                             <li>{{!empty($user->job) ? "Работает в " . $user->job: '' }}</li>
                             <li>{{!empty($user->school) ? "Учился в " . $user->school: '' }}</li>
                             @if(Auth::user()->id == $user->id)
-                            <li><a href="{{ route('profile.edit',['id' => $user->id]) }}">Редактировать информацию</a></li>
+                                <li><a href="{{ route('profile.edit',['id' => $user->id]) }}">Редактировать
+                                        информацию</a></li>
                             @endif
                         </ul>
                     </div>
@@ -55,11 +57,17 @@
                         <div class="d-flex justify-content-between">
                             <h4 class="pl-3 pt-3">Друзья</h4>
                             @if(Auth::user()->canDeleteByFriend($user->id) || Auth::user()->canDeleteByUser($user->id) )
-                            <button type="submit" class="btn btn-danger delete-friend" data-id="{{$user->id}}">Удалить из друзей</button>
+                                <button type="submit" class="btn btn-danger delete-friend" data-id="{{$user->id}}">
+                                    Удалить из друзей
+                                </button>
                             @elseif(Auth::user()->friendRequestsById($user->id))
-                            <button type="submit" class="btn btn-info delete-friend" data-id="{{$user->id}}">Отменить запрос</button>
+                                <button type="submit" class="btn btn-info delete-friend" data-id="{{$user->id}}">
+                                    Отменить запрос
+                                </button>
                             @elseif(Auth::user()->id != $user->id)
-                            <button type="submit" class="btn btn-primary friend-subm" data-id="{{$user->id}}">Добавить в друзья</button>
+                                <button type="submit" class="btn btn-primary friend-subm" data-id="{{$user->id}}">
+                                    Добавить в друзья
+                                </button>
                             @endif
                         </div>
 
@@ -70,7 +78,8 @@
                                 @foreach($user->friends() as $friend)
                                     <li style="padding-right: 15px;padding-top:15px">
                                         <div style="width: 50px;height: 50px;border-radius: 100%;overflow:hidden">
-                                            <img src="{{$friend->getAvatar()}}" alt="" style="width: 100%;height: 100%;object-fit: cover;">
+                                            <img src="{{$friend->getAvatar()}}" alt=""
+                                                 style="width: 100%;height: 100%;object-fit: cover;">
                                         </div>
                                         <a href="{{ route('profile.index',['id' => $friend->id]) }}">{{ $friend->getName() }}</a>
                                     </li>
@@ -82,36 +91,61 @@
                 <div class="col-lg-6">
                     <div class="profile-info">
                         <div style="padding: 10px 15px;">
-                            <form action="" method="">
-                                <div class="input-group mb-3">
-                                    <input type="text" class="form-control" placeholder="Что у вас нового?" name="userNews">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-primary" type="button">Поделиться</button>
+                            @if(Auth::user()->id == $user->id)
+                                <form action="{{route('user.post')}}" method="POST">
+                                    @csrf
+                                    <div class="form-group mb-3">
+                                    <textarea class="form-control {{ $errors->has('body') ? 'is-invalid':''}}"
+                                              placeholder="Поделитесь вашими новостями."
+                                              name="body"></textarea>
+                                        @if($errors->has('body'))
+                                            <div class="invalid-feedback">
+                                                <p>{{$errors->first('body')}}</p>
+                                            </div>
+                                        @endif
+                                        <div class="input-group mt-2">
+                                            <button class="btn btn-outline-primary" type="submit">Поделиться</button>
+                                        </div>
                                     </div>
-                                </div>
-                            </form>
+                                </form>
+                            @else
+                                <h4>Публикации</h4>
+                            @endif
                         </div>
                     </div>
+                    @foreach($posts as $post)
+                        <div class="profile-info mt-3 mb-3">
+                            <div class="media" style="padding: 15px">
+                                <img class="mr-3" src="{{ $user->getAvatar() }}" alt="Generic placeholder image"
+                                     style="height: 64px;width:64px;object-fit: cover; border-radius: 50%">
+                                <div class="media-body">
+                                    {{$post['body']}}
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
                 <div class="col-lg-2">
                     <div class="profile-info pb-3">
                         <h6 class="pl-3 pt-3">Запросы в друзья</h6>
-                            @if (!$friend_requests->count())
-                                <p class="pl-3">Нет запросов в друзья.</p>
-                            @else
-                                @foreach($friend_requests as $user_friend)
-                                    <div class="user_friend pl-3">
-                                        <p class="user_friend"></p>
-                                        <div class="d-flex align-items-center">
-                                            <div style="width: 50px;height: 50px;border-radius: 100%;overflow:hidden">
-                                                <img src="{{$user_friend->getAvatar()}}" alt="" style="width: 100%;height: 100%;object-fit: cover;">
-                                            </div>
-                                            <a href="{{ route('profile.index',['id' => $user_friend->id]) }}" class="pl-2">{{ $user_friend->getName() }}</a>
+                        @if (!$friend_requests->count())
+                            <p class="pl-3">Нет запросов в друзья.</p>
+                        @else
+                            @foreach($friend_requests as $user_friend)
+                                <div class="user_friend pl-3">
+                                    <p class="user_friend"></p>
+                                    <div class="d-flex align-items-center">
+                                        <div style="width: 50px;height: 50px;border-radius: 100%;overflow:hidden">
+                                            <img src="{{$user_friend->getAvatar()}}" alt=""
+                                                 style="width: 100%;height: 100%;object-fit: cover;">
                                         </div>
-                                        <span class="btn btn-outline-primary accept mt-2" data-id="{{$user_friend->id}}">Принять</span>
+                                        <a href="{{ route('profile.index',['id' => $user_friend->id]) }}"
+                                           class="pl-2">{{ $user_friend->getName() }}</a>
                                     </div>
-                                @endforeach
-                            @endif
+                                    <span class="btn btn-outline-primary accept mt-2" data-id="{{$user_friend->id}}">Принять</span>
+                                </div>
+                            @endforeach
+                        @endif
                     </div>
                 </div>
             </div>
@@ -155,7 +189,7 @@
                             _token: '{{ csrf_token() }}'
                         },
                         success: function (data) {
-                           location.reload();
+                            location.reload();
                         },
                         error: function (msg) {
                             alert('Ошибка');
