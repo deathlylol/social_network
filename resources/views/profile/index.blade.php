@@ -70,12 +70,11 @@
                                 </button>
                             @endif
                         </div>
-
                         <ul class="d-flex flex-wrap">
-                            @if (!$user->friends()->count())
+                            @if (count($friends) == 0)
                                 <p>Нет друзей.</p>
                             @else
-                                @foreach($user->friends() as $friend)
+                                @foreach($friends as $friend)
                                     <li style="padding-right: 15px;padding-top:15px">
                                         <div style="width: 50px;height: 50px;border-radius: 100%;overflow:hidden">
                                             <img src="{{$friend->getAvatar()}}" alt=""
@@ -156,14 +155,12 @@
             $('document').ready(function () {
 
                 $('.accept').on('click', function () {
-                    let li_block = $(this);
                     let friend_id = $(this).attr('data-id');
                     $.ajax({
                         dataType: "json",
                         url: '{{ route('user.add-friend') }}',
                         type: "POST",
                         data: {
-                            user_id: {{$user->id}},
                             friend_id: friend_id,
                             accepted: true,
                             _token: '{{ csrf_token() }}'

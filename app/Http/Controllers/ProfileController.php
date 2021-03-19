@@ -24,11 +24,14 @@ class ProfileController extends Controller
     {
         $user = User::query()->findOrFail($id);
         $friend_requests =  Auth::user()->friendRequests();
+        $friends = $user->friends();
         $posts = $user->posts;
+
         return view('profile.index',[
             'user' => $user,
             'friend_requests' => $friend_requests,
-            'posts' => $posts
+            'posts' => $posts,
+            'friends' => $friends
         ]);
     }
 

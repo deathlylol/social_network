@@ -107,21 +107,27 @@ class User extends Authenticatable
 
     public function friendRequests()
     {
-        return $this->by_user_friends()->wherePivot('accepted', false)->get();
+        return $this->by_friend_id()->wherePivot('accepted', false)->get();
     }
 
     public function friendRequestsById($id)
     {
-        return $this->by_friend_friends()->wherePivot('accepted', false)->wherePivot('user_id', $id)->first();
+        return $this->by_user_id()->wherePivot('accepted', false)->wherePivot('user_id', $id)->first();
     }
 
     public function canDeleteByFriend($id)
     {
-        return $this->by_friend_friends()->wherePivot('accepted', true)->wherePivot('user_id',$id)->first();
+        return $this->by_user_id()->wherePivot('accepted', true)->wherePivot('user_id',$id)->first();
     }
 
     public function canDeleteByUser($id)
     {
-        return $this->by_user_friends()->wherePivot('accepted', true)->wherePivot('friend_id',$id)->first();
+        return $this->by_friend_id()->wherePivot('accepted', true)->wherePivot('friend_id',$id)->first();
+    }
+
+    public function friends()
+    {
+        return $this->by_friend_id()->wherePivot('accepted',true)->get()
+            ->merge( $this->by_user_id()->wherePivot('accepted',true)->get() );
     }
 }

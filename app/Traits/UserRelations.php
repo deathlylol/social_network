@@ -7,20 +7,14 @@ use App\Models\User;
 
 trait UserRelations
 {
-    public function by_user_friends() //юзера отправителя friend
+    public function by_friend_id() // получаю друзей,которые делали запрос на дружбу
     {
         return $this->belongsToMany(User::class,'friends','user_id','friend_id');
     }
 
-    public function by_friend_friends() // frienda получаю юзера
+    public function by_user_id() // получаю user'a к которому кидался запрос на добавление друга
     {
         return $this->belongsToMany(User::class,'friends','friend_id','user_id');
-    }
-
-    public function friends()
-    {
-        return $this->by_user_friends()->wherePivot('accepted',true)->get()
-            ->merge( $this->by_friend_friends()->wherePivot('accepted',true)->get() );
     }
 
     public function posts()

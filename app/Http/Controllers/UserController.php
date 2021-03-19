@@ -94,7 +94,7 @@ class UserController extends Controller
             $user_friend = User::query()->findOrFail($request->input('friend_id'));
             $friend_id = $request->input('friend_id');
 
-            Auth::user()->by_user_friends()
+            Auth::user()->by_friend_id()
                 ->wherePivot('accepted', false)
                 ->where('friend_id', $friend_id)
                 ->first()
@@ -113,7 +113,7 @@ class UserController extends Controller
                 'accepted' => 'required'
             ]);
             $friend = User::query()->findOrFail($request->input('friend_id'));
-            return Auth::user()->by_friend_friends()
+            return Auth::user()->by_user_id()
                 ->wherePivot('accepted', true)
                 ->orWherePivot('accepted',false)
                 ->wherePivot('user_id' , $friend->id)
