@@ -59,7 +59,7 @@ class AuthController extends Controller
         {
             return redirect()->back()->withInput()->with('danger','Неправильный логин или пароль.');
         }
-        return redirect()->route('home')->with('success','Вы успешно авторизовались.');
+        return redirect()->route('profile.index',['id' => Auth::user()->id])->with('success','Вы успешно авторизовались.');
     }
 
     public function logout()

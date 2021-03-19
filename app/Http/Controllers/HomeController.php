@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Posts;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -27,6 +28,14 @@ class HomeController extends Controller
 
     public function infoWall()
     {
-        return view('templates.infowall');
+        $posts = Posts::query()->where(function($query){
+            return $query->whereIn('user_id', Auth::user()->friends()->pluck('id'));
+        })
+        ->orderBy('created_at','asc')
+        ->paginate(10);
+
+        return view('templates.infowall',[
+            'posts' => $posts
+        ]);
     }
 }
