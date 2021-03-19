@@ -155,14 +155,12 @@
             $('document').ready(function () {
 
                 $('.accept').on('click', function () {
-                    let li_block = $(this);
                     let friend_id = $(this).attr('data-id');
                     $.ajax({
                         dataType: "json",
                         url: '{{ route('user.add-friend') }}',
                         type: "POST",
                         data: {
-                            user_id: {{$user->id}},
                             friend_id: friend_id,
                             accepted: true,
                             _token: '{{ csrf_token() }}'
